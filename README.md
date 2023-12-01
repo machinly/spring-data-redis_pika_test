@@ -1,1 +1,1 @@
-# spring-data-redis_pika_test
+# spring-lettuce-pika
