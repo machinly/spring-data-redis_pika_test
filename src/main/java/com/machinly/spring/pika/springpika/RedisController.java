@@ -2,17 +2,11 @@ package com.machinly.spring.pika.springpika;
 
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulConnection;
-import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.protocol.ProtocolVersion;
-import io.lettuce.core.protocol.RedisCommand;
-import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.logging.Logger;
 
 @RestController
 public class RedisController {
