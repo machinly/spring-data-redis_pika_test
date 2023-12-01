@@ -1,0 +1,1 @@
+# spring-data-redis_pika_test
