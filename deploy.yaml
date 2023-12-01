@@ -1,0 +1,98 @@
+---
+# deploy pika standalone
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pika-deployment
+  labels:
+    app: pika
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pika
+  template:
+    metadata:
+      labels:
+        app: pika
+    spec:
+      containers:
+        - name: pika
+          image: pikadb/pika:v3.5.1
+          ports:
+            - containerPort: 9221
+          volumeMounts:
+            - name: pika-conf
+              mountPath: /etc/pika/
+          command: [ "/bin/sh" ]
+          args: [ "-c", "/pika/bin/pika -c /etc/pika/pika.conf" ]
+      volumes:
+        - name: pika-conf
+          configMap:
+            name: pika-conf
+            items:
+              - key: pika.conf
+                path: pika.conf
+
+---
+# configmap for pika standalone
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pika-conf
+data:
+  pika.conf: |
+    requirepass: 123456
+    masterauth: 123456
+    userpass: 123456
+    port : 9221
+    thread-num : 1
+    thread-pool-size : 12
+    sync-thread-num : 6
+    log-path : ./log/
+    db-path : ./db/
+    write-buffer-size : 256M
+    arena-block-size :
+    timeout : 60
+    masterauth :
+    userpass :
+    userblacklist :
+    instance-mode : classic
+    databases : 1
+    replication-num : 0
+    consensus-level : 0
+    dump-prefix :
+    dump-path : ./dump/
+    dump-expire : 0
+    pidfile : ./pika.pid
+    maxclients : 20000
+    target-file-size-base : 20M
+    expire-logs-days : 7
+    expire-logs-nums : 10
+    root-connection-num : 2
+    slowlog-write-errorlog : no
+    slowlog-log-slower-than : 10000
+    slowlog-max-len : 128
+    db-sync-path : ./dbsync/
+    db-sync-speed : -1
+    slave-priority : 100
+    sync-window-size : 9000
+    max-conn-rbuf-size : 268435456
+    write-binlog : yes
+    binlog-file-size : 104857600
+    max-cache-statistic-keys : 0
+    small-compaction-threshold : 5000
+    max-write-buffer-size : 10737418240
+    max-write-buffer-num : 2
+    max-client-response-size : 1073741824
+    compression : snappy
+    max-background-flushes : 1
+    max-background-compactions : 2
+    max-background-jobs : 3
+    max-cache-files : 5000
+    max-bytes-for-level-multiplier : 10
+    slotmigrate : no
+    default-slot-num : 1024
+    throttle-bytes-per-second : 207200000
+    max-rsync-parallel-num : 4
